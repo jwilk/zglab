@@ -22,7 +22,15 @@ def wget(url):
 def wget_json(url):
     with wget(url) as fp:
         with io.TextIOWrapper(fp, encoding='UTF-8') as tfp:
-            return json.load(tfp)
+            return json.load(tfp, object_hook=DictProxy)
+
+class DictProxy(object):
+
+    def __init__(self, d):
+        self._d = d
+
+    def __getattr__(self, attr):
+        return self._d[attr]
 
 def fmt_date(d):
     d = re.sub('[.]\d+', '', d)
@@ -30,8 +38,8 @@ def fmt_date(d):
     return d
 
 def fmt_user(user, url):
-    url = urllib.request.urljoin(url, user['path'])
-    username = user['username']
+    url = urllib.request.urljoin(url, user.path)
+    username = user.username
     return f'{username} <{url}>'
 
 def main():
@@ -40,28 +48,28 @@ def main():
     opts = ap.parse_args()
     jurl = f'{opts.url}.json'
     data = wget_json(jurl)
-    print('Location:', urllib.parse.urljoin(opts.url, data['web_url']))
-    print('Title:', data['title'])
-    print('Type:', data['type'])
-    print('Created-At:', fmt_date(data['created_at']))
-    print('Updated-At:', fmt_date(data['updated_at']))
-    labels = [label['title'] for label in data['labels']]
+    print('Location:', urllib.parse.urljoin(opts.url, data.web_url))
+    print('Title:', data.title)
+    print('Type:', data.type)
+    print('Created-At:', fmt_date(data.created_at))
+    print('Updated-At:', fmt_date(data.updated_at))
+    labels = [label.title for label in data.labels]
     if labels:
         print('Labels:', *labels)
     print()
-    print(data['description'])
+    print(data.description)
     jurl = f'{opts.url}/discussions.json'
     data = wget_json(jurl)
     for item in data:
-        for note in item['notes']:
+        for note in item.notes:
             print()
             print('-' * 72)
-            url = note['noteable_note_url']
+            url = note.noteable_note_url
             if url:
                 print('Location:', url)
-            print('From:', fmt_user(note['author'], url or jurl))
+            print('From:', fmt_user(note.author, url or jurl))
             print()
-            print(note['note'])
+            print(note.note)
 
 if __name__ == '__main__':
     main()

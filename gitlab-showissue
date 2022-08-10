@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: MIT
 
 import argparse
+import html.parser
 import io
 import json
 import re
@@ -46,9 +47,27 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('url', metavar='URL')
     opts = ap.parse_args()
+    author = None
+    class HTMLParser(html.parser.HTMLParser):
+        def handle_starttag(self, tag, attrs):
+            nonlocal author
+            if tag == 'a':
+                attrs = dict(attrs)
+                classes = attrs.get('class', '').split()
+                if 'author-link' in classes:
+                    userurl = urllib.request.urljoin(opts.url, attrs['href'])
+                    username = attrs['data-name']
+                    author = f'{username} <{userurl}>'
+    html_parser = HTMLParser()
+    with wget(opts.url) as fp:
+        with io.TextIOWrapper(fp, encoding='UTF-8') as tfp:
+            data = tfp.read()
+        html_parser.feed(data)
     jurl = f'{opts.url}.json'
     data = wget_json(jurl)
     print('Location:', urllib.parse.urljoin(opts.url, data.web_url))
+    if author:
+        print('From:', author)
     print('Title:', data.title)
     print('Type:', data.type)
     print('Created-At:', fmt_date(data.created_at))

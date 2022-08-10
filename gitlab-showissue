@@ -40,8 +40,7 @@ def fmt_date(d):
 
 def fmt_user(user, url):
     url = urllib.request.urljoin(url, user.path)
-    username = user.username
-    return f'{username} <{url}>'
+    return f'{user.name} <{url}>'
 
 def main():
     ap = argparse.ArgumentParser()

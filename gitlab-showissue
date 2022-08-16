@@ -71,8 +71,7 @@ def main():
     print('Type:', data.type)
     print('Created-At:', fmt_date(data.created_at))
     print('Updated-At:', fmt_date(data.updated_at))
-    labels = [label.title for label in data.labels]
-    if labels:
+    if labels := [label.title for label in data.labels]:
         print('Labels:', *labels)
     print()
     print(data.description)
@@ -82,8 +81,7 @@ def main():
         for note in item.notes:
             print()
             print('-' * 72)
-            url = note.noteable_note_url
-            if url:
+            if url := note.noteable_note_url:
                 print('Location:', url)
             print('From:', fmt_user(note.author, url or jurl))
             print()

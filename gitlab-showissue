@@ -11,7 +11,7 @@ import re
 import urllib.parse
 import urllib.request
 
-0_0  # Python >= 3.6 is required
+lambda x, /: 0  # Python >= 3.8 is required
 
 user_agent = 'gitlab-toolbox (https://github.com/jwilk/gitlab-toolbox)'
 

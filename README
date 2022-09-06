@@ -1,0 +1,32 @@
+.. code:: console
+
+   $ gitlab-showissue https://code.videolan.org/videolan/vlc/-/issues/26772
+   Location: https://code.videolan.org/videolan/vlc/-/issues/26772
+   From: Nicolas Chauvet <https://code.videolan.org/kwizart>
+   Title: VAAPI is disabled with ffmpeg5 on vlc-3x
+   Type: ISSUE
+   Created-At: 2022-03-30 17:25:30Z
+   Updated-At: 2022-08-10 11:22:41Z
+
+   ffmpeg have removed `libavcodec/vaapi.h` according to
+   https://code.videolan.org/videolan/vlc/-/commit/1ee376ac54fe5791f8bb36415e04f65d1165e37e
+
+   This patch cannot be picked in vlc-3x but it's possible to adapt something for vlc-3.x and ffmpeg5+
+
+   ------------------------------------------------------------------------
+   Location: https://code.videolan.org/videolan/vlc/-/issues/26772#note_316827
+   From: Jean-Baptiste Kempf <https://code.videolan.org/jbk>
+
+   As we said, we won’t support full FFmpeg5 in 3.0.
+
+   So I don’t  think we will fix.
+
+   ------------------------------------------------------------------------
+   ⋮
+   ------------------------------------------------------------------------
+   Location: https://code.videolan.org/videolan/vlc/-/issues/26772#note_339332
+   From: Thomas Guillem <https://code.videolan.org/tguillem>
+
+   marked this issue as related to #27224
+
+.. vim:ft=rst ts=3 sts=3 sw=3 et

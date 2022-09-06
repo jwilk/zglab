@@ -1,3 +1,6 @@
+Usage
+=====
+
 .. code:: console
 
    $ gitlab-showissue https://code.videolan.org/videolan/vlc/-/issues/26772
@@ -28,5 +31,10 @@
    From: Thomas Guillem <https://code.videolan.org/tguillem>
 
    marked this issue as related to #27224
+
+Requisites
+==========
+
+* Python ≥ 3.8
 
 .. vim:ft=rst ts=3 sts=3 sw=3 et

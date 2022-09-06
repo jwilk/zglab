@@ -34,7 +34,7 @@ class DictProxy(object):
         return self._d[attr]
 
 def fmt_date(d):
-    d = re.sub('[.]\d+', '', d)
+    d = re.sub(r'[.]\d+', '', d)
     d = d.replace('T', ' ')
     return d
 

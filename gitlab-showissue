@@ -15,10 +15,20 @@ lambda x, /: 0  # Python >= 3.8 is required
 
 user_agent = 'gitlab-toolbox (https://github.com/jwilk/gitlab-toolbox)'
 
+class HTTPRedirectHandler(urllib.request.HTTPRedirectHandler):
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        sign_in_url = '/users/sign_in'
+        if newurl.endswith(sign_in_url):
+            raise RuntimeError(f'{req.full_url} redirects to ...{sign_in_url}')
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+http_opener = urllib.request.build_opener(HTTPRedirectHandler)
+
 def wget(url):
     headers = {'User-Agent': user_agent}
     request = urllib.request.Request(url, headers=headers)
-    return urllib.request.urlopen(request)
+    return http_opener.open(request)
 
 def wget_json(url):
     with wget(url) as fp:

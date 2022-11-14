@@ -85,7 +85,12 @@ def xmain():
     if author:
         print('From:', author)
     print('Title:', data.title)
-    print('Type:', data.type)
+    try:
+        data_type = data.type
+    except KeyError:
+        pass
+    else:
+        print('Type:', data_type)
     print('Created-At:', fmt_date(data.created_at))
     print('Updated-At:', fmt_date(data.updated_at))
     if labels := [label.title for label in data.labels]:

@@ -8,6 +8,7 @@ import html.parser
 import io
 import json
 import re
+import signal
 import urllib.parse
 import urllib.request
 
@@ -57,7 +58,7 @@ def strip_url_fragment(url):
     tup = tup._replace(fragment='')
     return urllib.parse.urlunsplit(tup)
 
-def main():
+def xmain():
     ap = argparse.ArgumentParser()
     ap.add_argument('url', metavar='URL')
     opts = ap.parse_args()
@@ -102,6 +103,14 @@ def main():
             print('From:', fmt_user(note.author, url or jurl))
             print()
             print(note.note)
+
+def main():
+    try:
+        xmain()
+    except BrokenPipeError:
+        signal.signal(signal.SIGPIPE, signal.SIG_DFL)
+        signal.raise_signal(signal.SIGPIPE)
+        raise
 
 if __name__ == '__main__':
     main()

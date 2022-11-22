@@ -53,16 +53,11 @@ def fmt_user(user, url):
     url = urllib.request.urljoin(url, user.path)
     return f'{user.name} <{url}>'
 
-def strip_url_fragment(url):
-    tup = urllib.parse.urlsplit(url)
-    tup = tup._replace(fragment='')
-    return urllib.parse.urlunsplit(tup)
-
 def xmain():
     ap = argparse.ArgumentParser()
     ap.add_argument('url', metavar='URL')
     opts = ap.parse_args()
-    opts.url = strip_url_fragment(opts.url)
+    opts.url, _ = urllib.parse.urldefrag(opts.url)
     author = None
     class HTMLParser(html.parser.HTMLParser):
         def handle_starttag(self, tag, attrs):

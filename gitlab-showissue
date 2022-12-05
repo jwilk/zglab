@@ -4,8 +4,8 @@
 # SPDX-License-Identifier: MIT
 
 import argparse
+import gzip
 import html.parser
-import io
 import json
 import re
 import signal
@@ -26,15 +26,23 @@ class HTTPRedirectHandler(urllib.request.HTTPRedirectHandler):
 http_opener = urllib.request.build_opener(HTTPRedirectHandler)
 http_opener.addheaders = [
     ('User-Agent', 'gitlab-toolbox (https://github.com/jwilk/gitlab-toolbox)'),
+    ('Accept-Encoding', 'gzip'),
 ]
 
 def wget(url):
-    return http_opener.open(url)
+    with http_opener.open(url) as fp:
+        content_encoding = fp.getheader('Content-Encoding', 'identity')
+        data = fp.read()
+    if content_encoding == 'gzip':
+        return gzip.decompress(data)
+    elif content_encoding == 'identity':
+        return data
+    else:
+        raise RuntimeError(f'unexpected Content-Encoding: {content_encoding!r}')
 
 def wget_json(url):
-    with wget(url) as fp:
-        with io.TextIOWrapper(fp, encoding='UTF-8') as tfp:
-            return json.load(tfp, object_hook=DictProxy)
+    data = wget(url)
+    return json.loads(data, object_hook=DictProxy)
 
 class DictProxy(object):
 
@@ -70,10 +78,9 @@ def xmain():
                     username = attrs['data-name']
                     author = f'{username} <{userurl}>'
     html_parser = HTMLParser()
-    with wget(opts.url) as fp:
-        with io.TextIOWrapper(fp, encoding='UTF-8') as tfp:
-            data = tfp.read()
-        html_parser.feed(data)
+    data = wget(opts.url)
+    data = data.decode('UTF-8')
+    html_parser.feed(data)
     jurl = f'{opts.url}.json'
     data = wget_json(jurl)
     print('Location:', urllib.parse.urljoin(opts.url, data.web_url))

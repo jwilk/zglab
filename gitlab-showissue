@@ -102,7 +102,7 @@ def xmain():
                 print('Location:', url)
             print('From:', fmt_user(note.author, url or jurl))
             print('Created-At:', fmt_date(note.created_at))
-            if note.updated_at is not None:
+            if (note.updated_at is not None) and (note.updated_at != note.created_at):
                 print('Updated-At:', fmt_date(note.updated_at))
             print()
             print(note.note)

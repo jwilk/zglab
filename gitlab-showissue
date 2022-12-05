@@ -14,7 +14,6 @@ import urllib.request
 
 lambda x, /: 0  # Python >= 3.8 is required
 
-user_agent = 'gitlab-toolbox (https://github.com/jwilk/gitlab-toolbox)'
 
 class HTTPRedirectHandler(urllib.request.HTTPRedirectHandler):
 
@@ -25,11 +24,12 @@ class HTTPRedirectHandler(urllib.request.HTTPRedirectHandler):
         return super().redirect_request(req, fp, code, msg, headers, newurl)
 
 http_opener = urllib.request.build_opener(HTTPRedirectHandler)
+http_opener.addheaders = [
+    ('User-Agent', 'gitlab-toolbox (https://github.com/jwilk/gitlab-toolbox)'),
+]
 
 def wget(url):
-    headers = {'User-Agent': user_agent}
-    request = urllib.request.Request(url, headers=headers)
-    return http_opener.open(request)
+    return http_opener.open(url)
 
 def wget_json(url):
     with wget(url) as fp:

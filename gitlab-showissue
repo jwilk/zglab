@@ -66,6 +66,8 @@ def xmain():
     ap.add_argument('url', metavar='URL')
     opts = ap.parse_args()
     opts.url, _ = urllib.parse.urldefrag(opts.url)
+    if not re.fullmatch(r'.*/issues/[0-9]+', opts.url):
+        ap.error('unsupported URL')
     author = None
     class HTMLParser(html.parser.HTMLParser):
         def handle_starttag(self, tag, attrs):

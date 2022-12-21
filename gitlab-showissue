@@ -82,6 +82,7 @@ def xmain():
     data = wget(opts.url)
     data = data.decode('UTF-8')
     html_parser.feed(data)
+    html_parser.close()
     jurl = f'{opts.url}.json'
     data = wget_json(jurl)
     print('Location:', urllib.parse.urljoin(opts.url, data.web_url))

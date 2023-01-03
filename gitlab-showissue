@@ -41,15 +41,10 @@ def wget(url):
 
 def wget_json(url):
     data = wget(url)
-    return json.loads(data, object_hook=DictProxy)
+    return json.loads(data, object_hook=Dict)
 
-class DictProxy(object):
-
-    def __init__(self, d):
-        self._d = d
-
-    def __getattr__(self, attr):
-        return self._d[attr]
+class Dict(dict):
+    __getattr__ = dict.__getitem__
 
 def fmt_date(d):
     d = re.sub(r'[.]\d+', '', d)

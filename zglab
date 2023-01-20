@@ -86,7 +86,8 @@ def xmain():
     html_parser.close()
     jurl = f'{opts.url}.json'
     data = wget_json(jurl)
-    print('Location:', urllib.parse.urljoin(opts.url, data.web_url))
+    web_url = urllib.parse.urljoin(opts.url, data.web_url)
+    print('Location:', web_url)
     if author:
         print('From:', author)
     print('Title:', data.title)

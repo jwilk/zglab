@@ -150,6 +150,7 @@ def autopager(*, raw_control_chars=False):
                 errors=sys.__stdout__.errors,
                 line_buffering=True,
             )
+            sys.stdout.isatty = sys.stdout.writable
             try:
                 yield
             finally:

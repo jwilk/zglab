@@ -4,11 +4,17 @@
 # SPDX-License-Identifier: MIT
 
 import argparse
+import contextlib
 import gzip
 import html.parser
+import io
 import json
+import os
 import re
+import shutil
 import signal
+import subprocess
+import sys
 import urllib.parse
 import urllib.request
 
@@ -113,9 +119,49 @@ def xmain():
             print()
             print(note.note)
 
+def find_command(command):
+    if shutil.which(command):
+        return command
+    return None
+
+@contextlib.contextmanager
+def autopager(*, raw_control_chars=False):
+    if not sys.stdout.isatty():
+        yield
+        return
+    cmdline = (os.environ.get('PAGER')
+        or find_command('pager')  # Debian:
+        # https://www.debian.org/doc/debian-policy/ch-customized-programs.html#editors-and-pagers
+        or 'more'  # POSIX:
+        # https://pubs.opengroup.org/onlinepubs/007904975/utilities/man.html#tag_04_85_08
+    )
+    if cmdline == 'cat':
+        yield
+        return
+    env = None
+    if 'LESS' not in os.environ:
+        env = dict(env or os.environ, LESS='-FXK')
+    assert sys.stdout is sys.__stdout__
+    try:
+        with subprocess.Popen(cmdline, shell=True, stdin=subprocess.PIPE, env=env) as pager:
+            sys.stdout = io.TextIOWrapper(pager.stdin,
+                encoding=sys.__stdout__.encoding,
+                errors=sys.__stdout__.errors,
+                line_buffering=True,
+            )
+            try:
+                yield
+            finally:
+                sys.stdout.close()
+    finally:
+        sys.stdout = sys.__stdout__
+    if pager.returncode:
+        raise RuntimeError('pager failed')
+
 def main():
     try:
-        xmain()
+        with autopager():
+            xmain()
     except BrokenPipeError:
         signal.signal(signal.SIGPIPE, signal.SIG_DFL)
         signal.raise_signal(signal.SIGPIPE)

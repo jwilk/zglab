@@ -103,6 +103,7 @@ def xmain():
         for note in item.notes:
             print()
             print('-' * 72)
+            print()
             if url := note.noteable_note_url:
                 print('Location:', url)
             print('From:', fmt_user(note.author, url or jurl))

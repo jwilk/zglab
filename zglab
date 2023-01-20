@@ -57,9 +57,14 @@ def fmt_date(d):
     d = d.replace('T', ' ')
     return d
 
+def fmt_url(url):
+    if sys.stdout.isatty():
+        return re.sub('(.)', r'_\b\1', url)
+    return url
+
 def fmt_user(user, url):
     url = urllib.request.urljoin(url, user.path)
-    return f'{user.name} <{url}>'
+    return f'{user.name} <{fmt_url(url)}>'
 
 def xmain():
     ap = argparse.ArgumentParser()
@@ -78,7 +83,7 @@ def xmain():
                 if 'author-link' in classes:
                     userurl = urllib.request.urljoin(opts.url, attrs['href'])
                     username = attrs['data-name']
-                    author = f'{username} <{userurl}>'
+                    author = f'{username} <{fmt_url(userurl)}>'
     html_parser = HTMLParser()
     data = wget(opts.url)
     data = data.decode('UTF-8')
@@ -87,7 +92,7 @@ def xmain():
     jurl = f'{opts.url}.json'
     data = wget_json(jurl)
     web_url = urllib.parse.urljoin(opts.url, data.web_url)
-    print('Location:', web_url)
+    print('Location:', fmt_url(web_url))
     if author:
         print('From:', author)
     print('Title:', data.title)
@@ -112,7 +117,7 @@ def xmain():
             print('-' * 72)
             print()
             if url := note.noteable_note_url:
-                print('Location:', url)
+                print('Location:', fmt_url(url))
             print('From:', fmt_user(note.author, url or jurl))
             print('Date:', fmt_date(note.created_at))
             if (note.updated_at is not None) and (note.updated_at != note.created_at):

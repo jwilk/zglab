@@ -26,8 +26,8 @@ jobs:
         python-version: ${{matrix.python-version}}
     - name: smoke test
       run: |
-        ./gitlab-showissue https://code.videolan.org/videolan/vlc/-/issues/26772
-        ./gitlab-showissue https://gitlab.com/inkscape/inkscape/-/issues/50
+        ./zglab https://code.videolan.org/videolan/vlc/-/issues/26772
+        ./zglab https://gitlab.com/inkscape/inkscape/-/issues/50
     - name: run pydiatra
       run: |
         python3 -m pip install pydiatra

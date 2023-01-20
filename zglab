@@ -24,7 +24,7 @@ class HTTPRedirectHandler(urllib.request.HTTPRedirectHandler):
 
 http_opener = urllib.request.build_opener(HTTPRedirectHandler)
 http_opener.addheaders = [
-    ('User-Agent', 'gitlab-toolbox (https://github.com/jwilk/gitlab-toolbox)'),
+    ('User-Agent', 'zglab (https://github.com/jwilk/zglab)'),
     ('Accept-Encoding', 'gzip'),
 ]
 

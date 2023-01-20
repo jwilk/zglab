@@ -3,7 +3,7 @@ Usage
 
 .. code:: console
 
-   $ gitlab-showissue https://code.videolan.org/videolan/vlc/-/issues/26772
+   $ zglab https://code.videolan.org/videolan/vlc/-/issues/26772
    Location: https://code.videolan.org/videolan/vlc/-/issues/26772
    From: Nicolas Chauvet <https://code.videolan.org/kwizart>
    Title: VAAPI is disabled with ffmpeg5 on vlc-3x

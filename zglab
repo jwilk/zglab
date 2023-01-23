@@ -20,7 +20,7 @@ import urllib.request
 
 lambda x, /: 0  # Python >= 3.8 is required
 
-text_width = int(os.getenv('ZGLAB_COLUMNS', '72'))
+text_width = int(os.getenv('ZGLAB_COLUMNS', '78'))
 
 class HTTPRedirectHandler(urllib.request.HTTPRedirectHandler):
 

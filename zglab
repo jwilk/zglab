@@ -68,8 +68,7 @@ def fmt_user(user, url):
     url = urllib.request.urljoin(url, user.path)
     return f'{user.name} <{fmt_url(url)}>'
 
-def fmt_markdown(s):
-    return s
+fmt_markdown = str
 
 def xmain():
     ap = argparse.ArgumentParser()

@@ -21,6 +21,7 @@ import urllib.request
 lambda x, /: 0  # Python >= 3.8 is required
 
 text_width = int(os.getenv('ZGLAB_COLUMNS', '78'))
+use_rich = os.getenv('ZGLAB_USE_RICH')
 
 class HTTPRedirectHandler(urllib.request.HTTPRedirectHandler):
 
@@ -68,7 +69,29 @@ def fmt_user(user, url):
     url = urllib.request.urljoin(url, user.path)
     return f'{user.name} <{fmt_url(url)}>'
 
-fmt_markdown = str
+def fmt_markdown_rich(s):
+    import rich.markdown
+    import rich.console
+    import functools
+    orig_MarkdownIt = rich.markdown.MarkdownIt
+    rich.markdown.MarkdownIt = functools.partial(rich.markdown.MarkdownIt, 'gfm-like')
+    try:
+        md = rich.markdown.Markdown(s)
+    finally:
+        rich.markdown.MarkdownIt = orig_MarkdownIt
+    with io.StringIO() as file:
+        console = rich.console.Console(
+            file=file,
+            force_terminal=sys.stdout.isatty(),
+            width=text_width,
+        )
+        console.print(md)
+        return file.getvalue()
+
+if use_rich:
+    fmt_markdown = fmt_markdown_rich
+else:
+    fmt_markdown = str
 
 def xmain():
     ap = argparse.ArgumentParser()
@@ -151,6 +174,8 @@ def autopager(*, raw_control_chars=False):
     env = None
     if 'LESS' not in os.environ:
         lessopts = '-FXK'
+        if use_rich:
+            lessopts += 'R'
         env = dict(env or os.environ, LESS=lessopts)
     assert sys.stdout is sys.__stdout__
     try:

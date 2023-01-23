@@ -20,6 +20,8 @@ import urllib.request
 
 lambda x, /: 0  # Python >= 3.8 is required
 
+text_width = int(os.getenv('ZGLAB_COLUMNS', '72'))
+
 class HTTPRedirectHandler(urllib.request.HTTPRedirectHandler):
 
     def redirect_request(self, req, fp, code, msg, headers, newurl):
@@ -114,7 +116,7 @@ def xmain():
     for item in data:
         for note in item.notes:
             print()
-            print('-' * 72)
+            print('-' * text_width)
             print()
             if url := note.noteable_note_url:
                 print('Location:', fmt_url(url))

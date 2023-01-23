@@ -150,7 +150,8 @@ def autopager(*, raw_control_chars=False):
         return
     env = None
     if 'LESS' not in os.environ:
-        env = dict(env or os.environ, LESS='-FXK')
+        lessopts = '-FXK'
+        env = dict(env or os.environ, LESS=lessopts)
     assert sys.stdout is sys.__stdout__
     try:
         with subprocess.Popen(cmdline, shell=True, stdin=subprocess.PIPE, env=env) as pager:

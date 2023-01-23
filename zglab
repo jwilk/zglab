@@ -68,6 +68,9 @@ def fmt_user(user, url):
     url = urllib.request.urljoin(url, user.path)
     return f'{user.name} <{fmt_url(url)}>'
 
+def fmt_markdown(s):
+    return s
+
 def xmain():
     ap = argparse.ArgumentParser()
     ap.add_argument('url', metavar='URL')
@@ -110,7 +113,7 @@ def xmain():
     if labels := [label.title for label in data.labels]:
         print('Labels:', *labels)
     print()
-    print(data.description)
+    print(fmt_markdown(data.description))
     jurl = f'{opts.url}/discussions.json'
     data = wget_json(jurl)
     for item in data:
@@ -125,7 +128,7 @@ def xmain():
             if (note.updated_at is not None) and (note.updated_at != note.created_at):
                 print('Update:', fmt_date(note.updated_at))
             print()
-            print(note.note)
+            print(fmt_markdown(note.note))
 
 def find_command(command):
     if shutil.which(command):

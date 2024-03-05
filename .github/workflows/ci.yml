@@ -24,7 +24,10 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: ${{matrix.python-version}}
-    - name: smoke test
+    - name: run tests
+      run: |
+        prove -v
+    - name: run network tests
       run: |
         ./zglab https://code.videolan.org/videolan/vlc/-/issues/26772
         ./zglab https://gitlab.com/inkscape/inkscape/-/issues/50

@@ -104,13 +104,13 @@ def xmain():
     class HTMLParser(html.parser.HTMLParser):
         def handle_starttag(self, tag, attrs):
             nonlocal author
-            if tag == 'a':
-                attrs = dict(attrs)
-                classes = attrs.get('class', '').split()
-                if 'author-link' in classes:
-                    userurl = urllib.request.urljoin(opts.url, attrs['href'])
-                    username = attrs['data-name']
-                    author = f'{username} <{fmt_url(userurl)}>'
+            attrs = dict(attrs)
+            if data := attrs.get('data-initial'):
+                data = json.loads(data)
+                username = data['authorName']
+                userurl = data['authorWebUrl']
+                userurl = urllib.request.urljoin(opts.url, userurl)
+                author = f'{username} <{fmt_url(userurl)}>'
     html_parser = HTMLParser()
     data = wget(opts.url)
     data = data.decode('UTF-8')

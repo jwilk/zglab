@@ -26,10 +26,9 @@ jobs:
         python-version: ${{matrix.python-version}}
     - name: run tests
       run: |
-        prove -v
-    - name: run network tests
+         ZGLAB_NETWORK_TESTING=1 prove -v
+    - name: run more network tests
       run: |
-        ./zglab https://code.videolan.org/videolan/vlc/-/issues/26772
         ./zglab https://gitlab.com/inkscape/inkscape/-/issues/50
     - name: run pydiatra
       run: |

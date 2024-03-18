@@ -19,8 +19,8 @@ assert_equal = tc.assertEqual
 
 var = 'ZGLAB_NETWORK_TESTING'
 if os.environ.get(var, '') != '1':
-	print(f'1..0 # SKIP set {var}=1 to opt in to network testing')
-	sys.exit()
+    print(f'1..0 # SKIP set {var}=1 to opt in to network testing')
+    sys.exit()
 print('1..1')
 basedir = pathlib.Path(__file__).parent.parent
 with open(f'{basedir}/README', 'rt', encoding='UTF-8') as file:

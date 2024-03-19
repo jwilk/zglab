@@ -158,7 +158,7 @@ def find_command(command):
     return None
 
 @contextlib.contextmanager
-def autopager(*, raw_control_chars=False):
+def autopager():
     if not sys.stdout.isatty():
         yield
         return

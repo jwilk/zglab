@@ -70,9 +70,9 @@ def fmt_user(user, url):
     return f'{user.name} <{fmt_url(url)}>'
 
 def fmt_markdown_rich(s):
-    import rich.markdown
-    import rich.console
     import functools
+    import rich.console
+    import rich.markdown
     orig_MarkdownIt = rich.markdown.MarkdownIt
     rich.markdown.MarkdownIt = functools.partial(rich.markdown.MarkdownIt, 'gfm-like')
     try:

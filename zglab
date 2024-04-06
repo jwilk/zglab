@@ -18,7 +18,7 @@ import sys
 import urllib.parse
 import urllib.request
 
-lambda x, /: 0  # Python >= 3.8 is required
+lambda x, /: x  # Python >= 3.8 is required
 
 text_width = int(os.getenv('ZGLAB_COLUMNS', '78'))
 use_rich = os.getenv('ZGLAB_USE_RICH')

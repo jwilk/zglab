@@ -104,6 +104,7 @@ def xmain():
     class HTMLParser(html.parser.HTMLParser):
         def handle_starttag(self, tag, attrs):
             nonlocal author
+            del tag
             attrs = dict(attrs)
             if data := attrs.get('data-initial'):
                 data = json.loads(data)

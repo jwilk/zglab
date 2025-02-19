@@ -9,7 +9,7 @@ Usage
    Title: VAAPI is disabled with ffmpeg5 on vlc-3x
    Type: ISSUE
    Date: 2022-03-30 17:25:30Z
-   Update: 2024-08-19 08:23:07Z
+   Update: 2025-01-15 13:51:44Z
 
    ffmpeg have removed `libavcodec/vaapi.h` according to
    https://code.videolan.org/videolan/vlc/-/commit/1ee376ac54fe5791f8bb36415e04f65d1165e37e
@@ -33,12 +33,10 @@ Usage
 
    ------------------------------------------------------------------------------
 
-   Location: https://code.videolan.org/videolan/vlc/-/issues/26772#note_450558
-   From: François Cartegnie <https://code.videolan.org/fcartegnie>
-   Date: 2024-08-19 08:23:07Z
-   Update: 2024-08-19 08:23:07Z
+   From: Thomas Guillem <https://code.videolan.org/tguillem>
+   Date: 2025-01-15 13:51:43Z
 
-   mentioned in issue #28605
+   closed
 
 Requisites
 ==========

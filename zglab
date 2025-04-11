@@ -164,15 +164,16 @@ def autopager():
     if not sys.stdout.isatty():
         yield
         return
-    cmdline = (os.environ.get('PAGER')
+    cmdline = os.environ.get('PAGER')
+    if cmdline in {'', 'cat'}:
+        yield
+        return
+    cmdline = (cmdline
         or find_command('pager')  # Debian:
         # https://www.debian.org/doc/debian-policy/ch-customized-programs.html#editors-and-pagers
         or 'more'  # POSIX:
         # https://pubs.opengroup.org/onlinepubs/007904975/utilities/man.html#tag_04_85_08
     )
-    if cmdline == 'cat':
-        yield
-        return
     env = None
     if 'LESS' not in os.environ:
         lessopts = '-FXK'

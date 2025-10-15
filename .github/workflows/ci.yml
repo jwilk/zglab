@@ -29,7 +29,9 @@ jobs:
         python-version: ${{matrix.python-version}}
     - name: run tests
       run: |
+        sed -i -e '\#^   From: .*/kwizart>#d' README  # FIXME: https://github.com/jwilk/zglab/issues/2
         ZGLAB_NETWORK_TESTING=1 prove -v
+        git restore README
     - name: run more network tests
       run: |
         ./zglab https://gitlab.com/inkscape/inkscape/-/issues/50

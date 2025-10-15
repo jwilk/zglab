@@ -29,7 +29,7 @@ jobs:
         python-version: ${{matrix.python-version}}
     - name: run tests
       run: |
-         ZGLAB_NETWORK_TESTING=1 prove -v
+        ZGLAB_NETWORK_TESTING=1 prove -v
     - name: run more network tests
       run: |
         ./zglab https://gitlab.com/inkscape/inkscape/-/issues/50

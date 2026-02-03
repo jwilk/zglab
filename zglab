@@ -96,6 +96,7 @@ else:
 
 def xmain():
     ap = argparse.ArgumentParser()
+    ap.color = False
     ap.add_argument('url', metavar='URL')
     opts = ap.parse_args()
     opts.url, _ = urllib.parse.urldefrag(opts.url)
